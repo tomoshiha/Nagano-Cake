@@ -1,33 +1,23 @@
 Rails.application.routes.draw do
 
   namespace :admin do
-    get 'orders_details/update'
+    resources :order_details, only: [:update]
 
-    get 'orders/show'
-    get 'orders/update'
+    resources :orders, only: [:show, :update]
 
-    get 'customers/index'
-    get 'customers/show'
-    get 'customers/edit'
-    get 'customers/update'
+    resources :customers, only: [:index, :show, :edit, :update]
 
-    get 'genres/index'
-    get 'genres/create'
-    get 'genres/edit'
-    get 'genres/update'
+    resources :genres, only: [:index, :create, :edit, :update]
 
-    resources :items, only: [:show, :edit, :update]
-    resource :item, only: [:index, :new, :create]
+    resources :items, only: [:index, :new, :create, :show, :edit, :update]
 
     get '/' => 'homes#top'
+
   end
 
   scope module: :public do
 
-   resources :addresses, only: [:edit, :update, :destroy] do
-    get '/addresses' => 'addresses#index'
-    post '/addresses' => 'addresses#create'
-   end
+   resources :addresses, only: [:index, :edit, :create, :update, :destroy]
 
    resource :order, only: [:new, :create, :index] do
      collection do
@@ -35,7 +25,6 @@ Rails.application.routes.draw do
       get :cmplete
      end
     end
-    resources :orders, only: [:show]
 
     resources :cart_items, only: [:index, :update, :destroy, :create] do
      collection do
@@ -50,8 +39,7 @@ Rails.application.routes.draw do
      end
     end
 
-    resources :items, only: [:show]
-    get '/items' => 'items#index'
+    resources :items, only: [:index, :show]
 
     root to: 'homes#top'
     get '/about' => 'homes#about'
